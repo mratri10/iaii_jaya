@@ -1,6 +1,6 @@
 {
   "name": "material-kit-react",
-  "homepage":"http://mratri10.github.io/ArnawaDeploy",
+  "homepage": "http://mratri10.github.io/ArnawaDeploy",
   "version": "1.9.0",
   "description": "Material Kit React. Coded by Creative Tim",
   "private": true,
@@ -30,24 +30,15 @@
     "reselect": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.1",
-    "@babel/plugin-proposal-class-properties": "7.10.1",
-    "@babel/preset-env": "7.10.1",
-    "@babel/preset-react": "7.10.1",
-    "eslint-config-prettier": "6.11.0",
-    "eslint-plugin-prettier": "3.1.3",
-    "eslint-plugin-react": "7.20.0",
-    "gulp": "4.0.2",
-    "gulp-append-prepend": "1.0.8",
-    "prettier": "2.0.5"
+    "gh-pages": "^2.2.0"
   },
   "optionalDependencies": {
     "typescript": "3.9.3"
   },
   "scripts": {
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d build",
-    "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "node server.js",
     "build": "react-scripts build && gulp licenses",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
@@ -67,8 +58,5 @@
       "not op_mini all"
     ],
     "development": []
-  },
-  "devDependencies":{
-    "gh-pages":"^2.1.1"
   }
 }
