@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "redux/reducers/authReducer";
 import customReducer from "redux/reducers/customReducer";
 import lokasiReducer from "./reducers/lokasiReducer";
+import productReducer from "./reducers/productReducer";
 
 const persistConfig = {
   key: "root",
@@ -14,5 +15,6 @@ const rootReducer = combineReducers({
   auth: authReducer,
   custom: customReducer,
   lokasi: lokasiReducer,
+  product: productReducer,
 });
 export default persistReducer(persistConfig, rootReducer);

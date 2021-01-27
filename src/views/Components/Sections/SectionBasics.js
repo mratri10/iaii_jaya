@@ -1,6 +1,7 @@
 import React from "react";
 // plugin that creates slider
 import Slider from "nouislider";
+import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -21,17 +22,34 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import CustomLinearProgress from "components/CustomLinearProgress/CustomLinearProgress.js";
 import Paginations from "components/Pagination/Pagination.js";
 import Badge from "components/Badge/Badge.js";
+import Card from "components/Card/Card.js";
+import CardBody from "components/Card/CardBody.js";
+import CardFooter from "components/Card/CardFooter.js";
+import team1 from "assets/img/faces/avatar.jpg";
+import team2 from "assets/img/faces/christian.jpg";
+import team3 from "assets/img/faces/kendall.jpg";
 
 import styles from "assets/jss/material-kit-react/views/componentsSections/basicsStyle.js";
+import { connect } from "react-redux";
+import { POST, fetch } from "redux/apis";
+import { getProduct, errProduct } from "redux/actions";
+import { GET } from "redux/apis";
 
 const useStyles = makeStyles(styles);
 
-export default function SectionBasics() {
+const SectionBasics = ({ dataProduct, getProduct }) => {
   const classes = useStyles();
   const [checked, setChecked] = React.useState([24, 22]);
   const [selectedEnabled, setSelectedEnabled] = React.useState("b");
   const [checkedA, setCheckedA] = React.useState(true);
   const [checkedB, setCheckedB] = React.useState(false);
+
+  const imageClasses = classNames(
+    classes.imgRaised,
+    classes.imgRoundedCircle,
+    classes.imgFluid
+  );
+
   React.useEffect(() => {
     if (
       !document
@@ -42,7 +60,7 @@ export default function SectionBasics() {
         start: [40],
         connect: [true, false],
         step: 1,
-        range: { min: 0, max: 100 }
+        range: { min: 0, max: 100 },
       });
     }
     if (
@@ -52,12 +70,21 @@ export default function SectionBasics() {
         start: [20, 60],
         connect: [false, true, false],
         step: 1,
-        range: { min: 0, max: 100 }
+        range: { min: 0, max: 100 },
       });
     }
     return function cleanup() {};
   });
-  const handleToggle = value => {
+  const [product1, setProduct] = React.useState([]);
+
+  if (!dataProduct.get.success) {
+    getProduct();
+  } else {
+    setTimeout(function () {
+      setProduct(dataProduct.get.data);
+    }, 700);
+  }
+  const handleToggle = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -72,33 +99,61 @@ export default function SectionBasics() {
     <div className={classes.sections}>
       <div className={classes.container}>
         <div className={classes.title}>
-          <h2>Basic Elements</h2>
+          <h2>Pakaian</h2>
         </div>
         <div id="buttons">
-          <div className={classes.title}>
-            <h3>
-              Buttons
-              <br />
-              <small>Pick your style</small>
-            </h3>
-          </div>
-          <GridContainer justify="center">
-            <GridItem xs={12} sm={12} md={8}>
-              <Button color="primary">Default</Button>
-              <Button color="primary" round>
-                round
-              </Button>
-              <Button color="primary" round>
-                <Favorite className={classes.icons} /> with icon
-              </Button>
-              <Button justIcon round color="primary">
-                <Favorite className={classes.icons} />
-              </Button>
-              <Button color="primary" simple>
-                simple
-              </Button>
-            </GridItem>
+          <GridContainer>
+            {product1.map((item) => {
+              return (
+                <>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <Card plain>
+                      <GridItem
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        className={classes.itemGrid}
+                      >
+                        <img
+                          src={item.imageUrl}
+                          alt="..."
+                          className={imageClasses}
+                          style={{ width: 120, height: 120 }}
+                        />
+                      </GridItem>
+                      <h4 className={classes.cardTitle}>
+                        {item.name}
+                        <br />
+                        <small className={classes.smallTitle}>
+                          Rp {item.harga}
+                        </small>
+                      </h4>
+                      <CardBody>
+                        <p className={classes.description}>{item.detail}</p>
+                      </CardBody>
+                      <CardFooter className={classes.justifyCenter}>
+                        <Button
+                          justIcon
+                          color="transparent"
+                          className={classes.margin5}
+                        >
+                          <i className={classes.socials + " fab fa-twitter"} />
+                        </Button>
+                        <Button
+                          justIcon
+                          color="transparent"
+                          className={classes.margin5}
+                        >
+                          <i className={classes.socials + " fab fa-linkedin"} />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </GridItem>
+                </>
+              );
+            })}
           </GridContainer>
+
           <div className={classes.title}>
             <h3>
               <small>Pick your size</small>
@@ -142,10 +197,10 @@ export default function SectionBasics() {
               <CustomInput
                 id="regular"
                 inputProps={{
-                  placeholder: "Regular"
+                  placeholder: "Regular",
                 }}
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
                 }}
               />
             </GridItem>
@@ -154,7 +209,7 @@ export default function SectionBasics() {
                 labelText="With floating label"
                 id="float"
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
                 }}
               />
             </GridItem>
@@ -164,7 +219,7 @@ export default function SectionBasics() {
                 id="success"
                 success
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
                 }}
               />
             </GridItem>
@@ -174,7 +229,7 @@ export default function SectionBasics() {
                 id="error"
                 error
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
                 }}
               />
             </GridItem>
@@ -183,14 +238,14 @@ export default function SectionBasics() {
                 labelText="With material Icons"
                 id="material"
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
                 }}
                 inputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <People />
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
             </GridItem>
@@ -199,14 +254,14 @@ export default function SectionBasics() {
                 labelText="With Font Awesome Icons"
                 id="font-awesome"
                 formControlProps={{
-                  fullWidth: true
+                  fullWidth: true,
                 }}
                 inputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <i className="fas fa-users" />
                     </InputAdornment>
-                  )
+                  ),
                 }}
               />
             </GridItem>
@@ -235,7 +290,7 @@ export default function SectionBasics() {
                       icon={<Check className={classes.uncheckedIcon} />}
                       classes={{
                         checked: classes.checked,
-                        root: classes.checkRoot
+                        root: classes.checkRoot,
                       }}
                     />
                   }
@@ -260,7 +315,7 @@ export default function SectionBasics() {
                       icon={<Check className={classes.uncheckedIcon} />}
                       classes={{
                         checked: classes.checked,
-                        root: classes.checkRoot
+                        root: classes.checkRoot,
                       }}
                     />
                   }
@@ -284,14 +339,14 @@ export default function SectionBasics() {
                       icon={<Check className={classes.uncheckedIcon} />}
                       classes={{
                         checked: classes.checked,
-                        root: classes.checkRoot
+                        root: classes.checkRoot,
                       }}
                     />
                   }
                   classes={{
                     label: classes.label,
                     disabled: classes.disabledCheckboxAndRadio,
-                    root: classes.labelRoot
+                    root: classes.labelRoot,
                   }}
                   label="Disabled Unchecked"
                 />
@@ -313,14 +368,14 @@ export default function SectionBasics() {
                       icon={<Check className={classes.uncheckedIcon} />}
                       classes={{
                         checked: classes.checked,
-                        root: classes.checkRoot
+                        root: classes.checkRoot,
                       }}
                     />
                   }
                   classes={{
                     label: classes.label,
                     disabled: classes.disabledCheckboxAndRadio,
-                    root: classes.labelRoot
+                    root: classes.labelRoot,
                   }}
                   label="Disabled Checked"
                 />
@@ -353,13 +408,13 @@ export default function SectionBasics() {
                       }
                       classes={{
                         checked: classes.radio,
-                        root: classes.radioRoot
+                        root: classes.radioRoot,
                       }}
                     />
                   }
                   classes={{
                     label: classes.label,
-                    root: classes.labelRoot
+                    root: classes.labelRoot,
                   }}
                   label="First Radio"
                 />
@@ -387,13 +442,13 @@ export default function SectionBasics() {
                       }
                       classes={{
                         checked: classes.radio,
-                        root: classes.radioRoot
+                        root: classes.radioRoot,
                       }}
                     />
                   }
                   classes={{
                     label: classes.label,
-                    root: classes.labelRoot
+                    root: classes.labelRoot,
                   }}
                   label="Second Radio"
                 />
@@ -422,13 +477,13 @@ export default function SectionBasics() {
                       classes={{
                         checked: classes.radio,
                         disabled: classes.disabledCheckboxAndRadio,
-                        root: classes.radioRoot
+                        root: classes.radioRoot,
                       }}
                     />
                   }
                   classes={{
                     label: classes.label,
-                    root: classes.labelRoot
+                    root: classes.labelRoot,
                   }}
                   label="Disabled Unchecked Radio"
                 />
@@ -457,7 +512,7 @@ export default function SectionBasics() {
                       classes={{
                         checked: classes.radio,
                         disabled: classes.disabledCheckboxAndRadio,
-                        root: classes.radioRoot
+                        root: classes.radioRoot,
                       }}
                     />
                   }
@@ -475,18 +530,18 @@ export default function SectionBasics() {
                   control={
                     <Switch
                       checked={checkedA}
-                      onChange={event => setCheckedA(event.target.checked)}
+                      onChange={(event) => setCheckedA(event.target.checked)}
                       value="checkedA"
                       classes={{
                         switchBase: classes.switchBase,
                         checked: classes.switchChecked,
                         thumb: classes.switchIcon,
-                        track: classes.switchBar
+                        track: classes.switchBar,
                       }}
                     />
                   }
                   classes={{
-                    label: classes.label
+                    label: classes.label,
                   }}
                   label="Toggle is on"
                 />
@@ -496,18 +551,18 @@ export default function SectionBasics() {
                   control={
                     <Switch
                       checked={checkedB}
-                      onChange={event => setCheckedB(event.target.checked)}
+                      onChange={(event) => setCheckedB(event.target.checked)}
                       value="checkedB"
                       classes={{
                         switchBase: classes.switchBase,
                         checked: classes.switchChecked,
                         thumb: classes.switchIcon,
-                        track: classes.switchBar
+                        track: classes.switchBar,
                       }}
                     />
                   }
                   classes={{
-                    label: classes.label
+                    label: classes.label,
                   }}
                   label="Toggle is off"
                 />
@@ -565,7 +620,7 @@ export default function SectionBasics() {
                   { text: 8 },
                   { text: 9 },
                   { text: "..." },
-                  { text: 12 }
+                  { text: 12 },
                 ]}
               />
               <Paginations
@@ -576,7 +631,7 @@ export default function SectionBasics() {
                   { active: true, text: 3 },
                   { text: 4 },
                   { text: 5 },
-                  { text: "NEXT" }
+                  { text: "NEXT" },
                 ]}
                 color="info"
               />
@@ -610,4 +665,21 @@ export default function SectionBasics() {
       </div>
     </div>
   );
-}
+};
+const mapsDispatchToProp = (dispatch) => ({
+  getProduct: (params) => {
+    fetch(GET, "products", params)
+      .then((res) => {
+        dispatch(getProduct(res));
+        params.history.push("/");
+      })
+      .catch((err) => {
+        dispatch(errProduct(err));
+      });
+  },
+});
+const mapsPropsToState = ({ product }) => {
+  const dataProduct = product;
+  return { dataProduct };
+};
+export default connect(mapsPropsToState, mapsDispatchToProp)(SectionBasics);

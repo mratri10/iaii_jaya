@@ -63,7 +63,7 @@ export default function Header(props) {
   // const brandComponent = <Button className={classes.title}>{brand}</Button>;
   const brandComponent = (
     <Button href="./" className={classes.title}>
-      Arnawa Teknologi
+      Kominfo Bukittinggi
     </Button>
   );
   return (

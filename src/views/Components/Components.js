@@ -38,7 +38,7 @@ export default function Components({ rest, history }) {
   return (
     <div>
       <Header
-        brand="Material Kit React"
+        brand="IAII"
         rightLinks={<HeaderLinks />}
         fixed
         color="transparent"
@@ -48,14 +48,16 @@ export default function Components({ rest, history }) {
         }}
         {...rest}
       />
-      <Parallax image={require("assets/img/bg4.jpg")}>
+      <Parallax image={require("assets/img/bg4.webp")}>
         <div className={classes.container}>
           <GridContainer>
             <GridItem>
               <div className={classes.brand}>
-                <h1 className={classes.title}>Material Kit React.</h1>
-                <h3 className={classes.subtitle}>
-                  A Badass Material-UI Kit based on Material Design.
+                <h1 className={classes.title} style={{ color: "black" }}>
+                  React is My Power
+                </h1>
+                <h3 className={classes.subtitle} style={{ color: "black" }}>
+                  Halo Saya Atri, Saya React Developer
                 </h3>
                 <div style={{ maxWidth: 400 }}>
                   <Button
